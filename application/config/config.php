@@ -23,8 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-// $config['base_url'] = 'http://localhost/app_posku';
-$config['base_url'] = "http://".$_SERVER['HTTP_HOST'];
+$config['base_url'] = "https://".$_SERVER['HTTP_HOST'];
 $config['base_url'] .= preg_replace('@/+$@','',dirname($_SERVER['SCRIPT_NAME'])).'/';
 
 /*
@@ -328,7 +327,7 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = 'UjiCobaPOSAplikasi01';
+$config['encryption_key'] = '';
 
 /*
 |--------------------------------------------------------------------------
