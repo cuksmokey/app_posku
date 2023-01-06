@@ -76,9 +76,17 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'app_posku',
+
+	// WEB
+	// 'username' => 'root',
+	// 'password' => '',
+	// 'database' => 'app_posku',
+
+	// LOCAL
+	// beautydream
+	'username' => 'beauty',
+	'password' => 'beautyndream',
+	'database' => 'beac3531_app_posku',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
