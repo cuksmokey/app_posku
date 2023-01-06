@@ -84,12 +84,12 @@ $db['default'] = array(
 
 	// LOCAL
 	// beautydream
-	// 'username' => 'beac3531_beauty',
-	// 'password' => 'beautyndream',
-	// 'database' => 'beac3531_app_posku',
-	'username' => 'ppin8794_beautydream',
-	'password' => 'beautydream',
-	'database' => 'ppin8794_app_posku',
+	'username' => 'beac3531_beauty',
+	'password' => 'beautyndream',
+	'database' => 'beac3531_app_posku',
+	// 'username' => 'ppin8794_beautydream',
+	// 'password' => 'beautydream',
+	// 'database' => 'ppin8794_app_posku',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
