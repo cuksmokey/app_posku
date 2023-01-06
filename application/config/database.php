@@ -84,7 +84,7 @@ $db['default'] = array(
 
 	// LOCAL
 	// beautydream
-	'username' => 'beauty',
+	'username' => 'beac3531_beauty',
 	'password' => 'beautyndream',
 	'database' => 'beac3531_app_posku',
 	'dbdriver' => 'mysqli',
