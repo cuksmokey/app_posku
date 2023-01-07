@@ -72,7 +72,7 @@
         }).then((willDelete) => {
             if (willDelete) {
                 $.ajax({
-                    url         : "<?= site_url('barang/hapus')?>/"+id,
+                    url         : "<?php echo base_url('barang/hapus')?>/"+id,
                     type        : "POST",
                     dataType    : "JSON",
                     success: function(data){
