@@ -14,10 +14,10 @@ class Transaksi extends CI_Controller {
             $cek          = $this->db->query("SELECT*FROM barang where id_barang=$id_barang")->row();
             if($qty > $cek->stok){
                 $this->session->set_flashdata('warning', 'Data Stock <b>Kurang</b> dari Persediaan...');
-                redirect('transaksi');
+                redirect('Transaksi');
             }else{
                 $this->m_transaksi->simpan_barang();
-                redirect('transaksi');
+                redirect('Transaksi');
             }
         }
         else{
@@ -35,7 +35,7 @@ class Transaksi extends CI_Controller {
         $id_op      = $this->db->get_where('operator',array('username'=>$user))->row_array();
         $data       = array('operator_id'=>$id_op['operator_id'],'tanggal_transaksi'=>$tanggal,'invoice'=>$inv);
         $this->m_transaksi->selesai($data);
-        redirect('transaksi');
+        redirect('Transaksi');
     }
 
     function barang($brg){
@@ -50,7 +50,7 @@ class Transaksi extends CI_Controller {
     function hapusitem($id) {
 		$where = array('id_transaksi_dtl' => $id);
 		$this->m_transaksi->hapus($where, 'transaksi_dtl');
-		redirect('transaksi');
+		redirect('Transaksi');
 	}
 
 }

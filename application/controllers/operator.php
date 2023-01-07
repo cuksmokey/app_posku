@@ -23,7 +23,7 @@ class Operator extends CI_Controller {
 					            'password'     => md5($password));
 
 		$this->m_operator->tambah($data, 'operator');
-		redirect('operator');
+		redirect('Operator');
 	}
 
 	function edit($id) {
@@ -48,13 +48,13 @@ class Operator extends CI_Controller {
 		);
 
 		$this->m_operator->load_edit($where, $data, 'operator');
-		redirect('operator');
+		redirect('Operator');
 	}
 
 	function hapus($id) {
 		$where = array('operator_id' => $id);
 		$this->m_operator->hapus($where, 'operator');
-		redirect('operator');
+		redirect('Operator');
 	}
 
 }

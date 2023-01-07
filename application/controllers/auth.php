@@ -19,10 +19,10 @@ class Auth extends CI_Controller{
                 $this->db->where('username',$username);
                 $this->db->update('operator',array('last_login'=>date('Y-m-d')));
                 $this->session->set_userdata(array('status_login'=>'oke','username'=>$username));
-                redirect('dashboard');
+                redirect('Dashboard');
             }
             else{
-                redirect('auth/login');
+                redirect('Auth/login');
             }
         }
         else{
@@ -33,7 +33,7 @@ class Auth extends CI_Controller{
     
     function logout() {
         $this->session->sess_destroy();
-        redirect('auth/login');
+        redirect('Auth/login');
     }
 }
 

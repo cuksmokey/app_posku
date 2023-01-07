@@ -24,7 +24,7 @@ class Barang extends CI_Controller {
 			);
 
 		$this->m_barang->tambah($data, 'barang');
-		redirect('barang');
+		redirect('Barang');
 	}
 
 	function hapus($id) {
@@ -67,7 +67,7 @@ class Barang extends CI_Controller {
 		);
 
 		$this->m_barang->load_edit($where, $data, 'barang');
-		redirect('barang');
+		redirect('Barang');
 	}
 
 }
