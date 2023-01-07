@@ -2,28 +2,19 @@
 class M_laporan extends CI_Model {
 
 	function lpr_default() {
-        $query="SELECT t.id_transaksi,t.tanggal_transaksi, o.nama_lengkap, sum((td.harga*td.qty)-td.discrp2) as total
-                FROM transaksi     as t,
-                	 transaksi_dtl as td,
-                	 operator      as o
-                WHERE td.id_transaksi = t.id_transaksi and o.operator_id = t.operator_id
-                group by t.id_transaksi ORDER BY t.tanggal_transaksi DESC";
-        return $this->db->query($query);
-    }
+		$query="SELECT t.invoice,t.id_transaksi,t.tanggal_transaksi, o.nama_lengkap, sum(td.harga*td.qty) AS total
+                FROM transaksi AS t,transaksi_dtl AS td, operator AS o
+                WHERE td.id_transaksi = t.id_transaksi AND o.operator_id = t.operator_id 
+                GROUP BY t.invoice DESC,t.id_transaksi";
+		return $this->db->query($query);
+	}
 
-    function laporan_periode($tanggal1,$tanggal2) {
-        $query="SELECT t.id_transaksi,t.tanggal_transaksi, o.nama_lengkap, sum(td.harga*td.qty) as total
-                FROM transaksi     as t,
-                	 transaksi_dtl as td,
-                	 operator      as o
-                WHERE td.id_transaksi = t.id_transaksi and o.operator_id = t.operator_id 
-                and t.tanggal_transaksi between '$tanggal1' and '$tanggal2'
-                group by t.id_transaksi ORDER BY t.tanggal_transaksi DESC";
-        return $this->db->query($query);
-    }
-
-
+	function laporan_periode($tanggal1,$tanggal2) {
+		$query="SELECT t.invoice,t.id_transaksi,t.tanggal_transaksi, o.nama_lengkap, sum(td.harga*td.qty) AS total
+                FROM transaksi AS t,transaksi_dtl AS td, operator AS o
+                WHERE td.id_transaksi = t.id_transaksi AND o.operator_id = t.operator_id 
+                AND t.tanggal_transaksi BETWEEN '$tanggal1' AND '$tanggal2'
+                GROUP BY t.invoice DESC,t.id_transaksi";
+		return $this->db->query($query);
+	}
 }
-
-
-?>

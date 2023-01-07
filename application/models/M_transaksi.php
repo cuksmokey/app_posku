@@ -23,12 +23,28 @@ class M_transaksi extends CI_Model {
         return $this->db->query($query);
     }
 
+	function bayarDong(){
+		// CEK JIKA SUDAH ISI
+		$cek = $this->db->query("SELECT*FROM bayar WHERE id_transaksi='0'");
+		if($cek->num_rows() == 0){
+			$this->db->set('id_transaksi', 0);
+			$this->db->set('bayar', $_POST['bayar']);
+			return $this->db->insert('bayar');
+		}else{
+			$bayar = $_POST['bayar'] + $cek->row()->bayar;
+			$this->db->set('bayar', $bayar);
+			$this->db->where('id_transaksi', $cek->row()->id_transaksi);
+			return $this->db->update('bayar');
+		}
+	}
+
     function selesai($data) {
         $this->db->insert('transaksi',$data);
         $last_id=  $this->db->query("SELECT id_transaksi from transaksi order by id_transaksi desc")->row_array();
         $this->db->query("UPDATE transaksi_dtl set id_transaksi='".$last_id['id_transaksi']."' where status='0'");
         $this->db->query("UPDATE transaksi_dtl set status='1' where status='0'");
         $this->db->query("UPDATE nourut set nourut=nourut+1 where kode_urut='TR'");
+        $this->db->query("UPDATE bayar set id_transaksi='".$last_id['id_transaksi']."' WHERE id_transaksi='0'");
     }
 
     function hapus($where, $table) {

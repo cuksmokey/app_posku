@@ -581,7 +581,7 @@ if ( ! function_exists('redirect'))
 		} 	
 	
 		$kode_transaksi1 = trim($param2).trim($param1);
-		$kode_transaksi2 = $kode_transaksi1.str_pad( $nomor_urut, $lebar-strlen($kode_transaksi1), '0', STR_PAD_LEFT );
+		$kode_transaksi2 = $kode_transaksi1.'-'.str_pad( $nomor_urut, $lebar-strlen($kode_transaksi1), '0', STR_PAD_LEFT );
 		return $kode_transaksi2;	
 	}
 }

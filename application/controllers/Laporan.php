@@ -117,27 +117,61 @@ class Laporan extends CI_Controller {
         $body       = '';
         $date       = '-';
 
-        $data_atas=  $this->db->query("SELECT (select nama_lengkap from operator where operator.operator_id=transaksi.operator_id)nm,transaksi.* FROM transaksi where id_transaksi='$id' ")->row();
+		if($id == 'ceknota'){
+			$data_atas=  $this->db->query("SELECT (SELECT nama_lengkap FROM operator WHERE operator.operator_id=transaksi.operator_id)nm,transaksi.* FROM transaksi ORDER BY transaksi.id_transaksi DESC")->row();
+			$datetgl = date("Y-m-d");
+			$invx = explode("-", $data_atas->invoice);
+			$noinv = intval($invx[1]+1);
+			$panjang = strlen(intval($invx[1]));
+			if($panjang == 1){
+				$ninv = '00000';
+			}else if($panjang == 2){
+				$ninv = '0000';
+			}else if($panjang == 3){
+				$ninv = '000';
+			}else if($panjang == 4){
+				$ninv = '00';
+			}else if($panjang == 5){
+				$ninv = '00';
+			}else if($panjang == 6){
+				$ninv = '0';
+			}else{
+				$ninv = '';
+			}
+			$inv = $invx[0].'-'.$ninv.$noinv;
+			$username = $this->session->userdata('username');
+		}else{
+			$data_atas=  $this->db->query("SELECT (select nama_lengkap from operator where operator.operator_id=transaksi.operator_id)nm,transaksi.* FROM transaksi where id_transaksi='$id'")->row();
+			$datetgl = $data_atas->tanggal_transaksi;
+			$inv = $data_atas->invoice;
+			$username = $data_atas->nm;
+		}
 
         $body .= '<table style="margin:0;padding:0;border-collapse:collapse;font-weight:bold;font-family:tahoma;font-size:10px;width:100%">
 			<tr>
 				<td>Tanggal/Waktu</td>
-				<td>: '.$this->tglInd($data_atas->tanggal_transaksi).' '.date("H:i").'</td>
+				<td>: '.$this->tglInd($datetgl).' '.date("H:i").'</td>
 			</tr>
 			<tr>
 				<td>No. Nota</td>
-				<td>: '.$data_atas->invoice.'</td>
+				<td>: '.$inv.'</td>
 			</tr>
 			<tr>
-				<td style="padding:0 0 10px">Kasir</td>
-				<td style="padding:0 0 10px">: '.$data_atas->nm.'</td>
+				<td style="padding:0 0 8px">Kasir</td>
+				<td style="padding:0 0 8px">: '.$username.'</td>
 			</tr>
 			<tr>
-				<td colspan="2" style="border-top:1px dashed #000;padding:10px 0">ITEM :</td>
+				<td colspan="2" style="border-top:1px dashed #000;padding:10px 0 0">ITEM :</td>
 			</tr>
         </table>';
 
-        $datad=  $this->db->query("SELECT (select nama_barang from barang where barang.id_barang=transaksi_dtl.id_barang)nm_brg,transaksi_dtl.*FROM transaksi_dtl where id_transaksi='$id'")->result();
+		if($id == 'ceknota'){
+			$datad=  $this->db->query("SELECT (select nama_barang from barang where barang.id_barang=transaksi_dtl.id_barang)nm_brg,transaksi_dtl.*FROM transaksi_dtl where id_transaksi='0'")->result();
+			$bayar = $this->db->query("SELECT*FROM bayar WHERE id_transaksi='0'")->row();
+		}else{
+			$datad=  $this->db->query("SELECT (select nama_barang from barang where barang.id_barang=transaksi_dtl.id_barang)nm_brg,transaksi_dtl.*FROM transaksi_dtl where id_transaksi='$id'")->result();
+			$bayar = $this->db->query("SELECT*FROM bayar WHERE id_transaksi='$id'")->row();
+		}
         
         $i        = 0;
         $total    = 0;
@@ -147,50 +181,68 @@ class Laporan extends CI_Controller {
         $body .="<table style=\"vertical-align:top;margin-bottom:10px;padding:0;border-collapse:collapse;font-size:10px;width:100%\">
 			<tr>
 				<td style=\"border:0;width:7%\"></td>
-				<td style=\"border:0;width:73%\"></td>
-				<td style=\"border:0;width:20%\"></td>
+				<td style=\"border:0;width:70%\"></td>
+				<td style=\"border:0;width:23%\"></td>
 			</tr>
 		";
 
         foreach ($datad as $datadet)
         {
+			if($datadet->qty == 1){
+				$kQty = '';
+			}else{
+				$kQty = '('.$datadet->qty.'x)';
+			}
             $i++;
             $body .='
             <tr>
                 <td>'.$i.'.</td>
-                <td>'.$datadet->nm_brg.'</td>
-                <td style="text-align:right">Rp. '.number_format($datadet->harga).'</td>
+                <td>'.$datadet->nm_brg.' '.$kQty.'</td>
+                <td style="text-align:right">Rp. '.number_format(($datadet->harga * $datadet->qty) - $datadet->discrp2).'</td>
             </tr>
             ';
 
-            $subtotal   = $subtotal + $datadet->harga;
-            $discrp     = $discrp + $datadet->discrp2;
+            $subtotal = $subtotal + ($datadet->harga * $datadet->qty);
+            $discrp = $discrp + $datadet->discrp2;
         }
 
-        $total = $subtotal-$discrp;
+        $total = $subtotal - $discrp;
 		$body .="</table>";
+
+		
 
         $body .='<table style="border-collapse:collapse;border-top:1px dashed #000;font-size:10px;width:100%">
             <tr>
-                <td style="padding-top:10px">Sub Total</td>
-                <td style="padding-top:10px;text-align:right">Rp. '.number_format($subtotal).'</td>
+                <td style="padding-top:5px">Sub Total</td>
+                <td style="padding-top:5px;text-align:right">Rp. '.number_format($subtotal).'</td>
             </tr>
             <tr>
-                <td style="padding-bottom:10px">Diskon</td>
-                <td style="padding-bottom:10px;text-align:right">- Rp. '.number_format($discrp).'</td>
-            </tr>
-			<tr>
-				<td colspan="2" style="border-top:1px dashed #000"></td>
-			</tr>
-            <tr>
-                <td style="padding:10px 0">Total</td>
-                <td style="padding:10px 0;text-align:right">Rp. '.number_format($total).'</td>
+                <td style="padding-bottom:5px">Diskon</td>
+                <td style="padding-bottom:5px;text-align:right">- Rp. '.number_format($discrp).'</td>
             </tr>
 			<tr>
 				<td colspan="2" style="border-top:1px dashed #000"></td>
 			</tr>
             <tr>
-                <td style="padding-top:10px" colspan="2">
+                <td style="padding:5px 0">Total</td>
+                <td style="padding:5px 0;text-align:right">Rp. '.number_format($total).'</td>
+            </tr>
+			<tr>
+				<td colspan="2" style="border-top:1px dashed #000"></td>
+			</tr>
+			<tr>
+                <td style="padding:5px 0 0">Cash</td>
+                <td style="padding:5px 0 0;text-align:right">Rp. '.number_format($bayar->bayar).'</td>
+            </tr>
+			<tr>
+                <td style="padding:0 0 5px">Change</td>
+                <td style="padding:0 0 5px;text-align:right">Rp. '.number_format($bayar->bayar - $total).'</td>
+            </tr>
+			<tr>
+				<td colspan="2" style="border-top:1px dashed #000"></td>
+			</tr>
+            <tr>
+                <td style="padding-top:5px" colspan="2">
 					<img src="'.base_url().'assets/css/ig.png" width="15" height="15" /> beautyndream.id
 				</td>
             </tr>
@@ -199,7 +251,7 @@ class Laporan extends CI_Controller {
             </tr>
             ';
 		$body .= "</table>";
-		$judul                = '-';
+		$judul = '-';
 
         $this->M_cetak->template_nota($judul, $body, $position, $date, $cekpdf);
 

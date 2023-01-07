@@ -28,31 +28,33 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th style="text-align:center" >No.</th>
-                                <th style="text-align:center" >Tanggal Transaksi</th>
-                                <th style="text-align:center" >Operator</th>
-                                <th style="text-align:center" >Total Transaksi</th>
-                                <th style="text-align:center" >Nota</th>
+                                <th style="text-align:center">No.</th>
+                                <th style="text-align:center">ID Transaksi</th>
+                                <th style="text-align:center">Tanggal Transaksi</th>
+                                <th style="text-align:center">Operator</th>
+                                <th style="text-align:center">Total Transaksi</th>
+                                <th style="text-align:center">Nota</th>
                             </tr>
                         </thead>
                         <tbody>
                         <?php $no=1; $total=0; foreach ($record->result() as $r){ ?>
                             <tr class="gradeU">
-                                <td align="center"><?= $no ?></td>
+                                <td><?= $no ?></td>
+                                <td><?= $r->invoice ?></td>
                                 <td><?= $this->M_cetak->tanggal_format_indonesia($r->tanggal_transaksi) ?></td>
                                 <td><?= $r->nama_lengkap ?></td>
-                                <td align="right"><?= $r->total ?></td>
-                                <td align="center" >
+                                <td style="text-align:right">Rp. <?= number_format($r->total) ?></td>
+                                <td style="text-align:center">
                                     <button type="button" onclick="cetak_nota('<?= $r->id_transaksi ?>')" class="btn btn-warning"><b>
                                         <i class="fa fa-print"></i>&nbsp; Cetak</b>
-                                    </button> 
+                                    </button>
                                 </td>
                             </tr>
                         <?php $no++; $total=$total+$r->total; } ?>
                             <tr>
-                                <td colspan="3">Total</td>
-                                <td><?= $total;?></td>
-                                <td >Total</td>
+                                <td colspan="4">Total</td>
+                                <td style="text-align:right">Rp. <?= number_format($total);?></td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>

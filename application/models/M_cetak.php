@@ -286,7 +286,7 @@ class M_cetak extends CI_Model {
 		$whatsapp    = $kop['whatsapp'];
 		$npwp        = $kop['npwp'];
 		$chari       = '';
-		$chari .= "<table style=\"border-collapse:collapse;font-family:Century Gothic;color:#000;border-bottom:1px dashed #000;\" width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+		$chari .= "<table style=\"margin-bottom:5px;border-collapse:collapse;font-family:Century Gothic;color:#000;border-bottom:1px dashed #000;\" width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 			<tr>
 				<td align=\"center\"><img src=\"".base_url()."assets/css/logo3.jpeg\"  width=\"100\" height=\"100\" /></td>
 			</tr> 
@@ -296,12 +296,6 @@ class M_cetak extends CI_Model {
 				<tr><td style=\"text-align:center;font-size:10px;padding-bottom:10px;\">$alamat</td></tr> 
 		</table>"; //$alamat
 		
-		$chari .= "
-			<table style=\"border-collapse:collapse;font-family: tahoma; font-size:12px\" width=\"100%\" align=\"center\" border=\"0\">
-				<tr>
-						<td> &nbsp; </td>
-				</tr> 
-			</table>";
 		$chari .= $body;
 		$data['prev']   = $chari;
 		$judul          = $param;
