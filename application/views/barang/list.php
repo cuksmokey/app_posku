@@ -71,37 +71,39 @@
         //     showCancelButton: true
         // }).then((willDelete) => {
         //     if (willDelete) {
-                $.ajax({
-                    url         : "<?php echo base_url('barang/hapus')?>/"+id,
-                    type        : "POST",
-                    dataType    : "JSON",
-                    success: function(data){
-                        if(data.status == 0){
-                            swal({
-                                html: "Barang Gagal Dihapus",
-                                type: "error",
-                                confirmButtonText: "Ok" 
-                            });
-                        } else {
-
-							swal({
-								title: "DATA",
-								html: "<p> Berhasil Terhapus </p>",
-								type: "success",
-								confirmButtonText: "OK" 
-							}).then((value) => {                        
-								window.location.reload();
-							});	
-                        }
-                    },
-                    error: function(xhr, ajaxOptions, thrownError){
-                        swal({
-                            html: "Barang Gagal Dihapus ",
-                            type: "error",
-                            confirmButtonText: "Ok" 
-                        });
-                    }
-                });
+		$.ajax({
+			url         : "<?php echo base_url('barang/hapus')?>",
+			type        : "POST",
+			data : ({
+				id
+			}),
+			dataType    : "JSON",
+			success: function(data){
+				if(data.status == 0){
+					swal({
+						html: "Barang Gagal Dihapus",
+						type: "error",
+						confirmButtonText: "Ok" 
+					});
+				} else {
+					swal({
+						title: "DATA",
+						html: "<p> Berhasil Terhapus </p>",
+						type: "success",
+						confirmButtonText: "OK" 
+					}).then((value) => {                        
+						window.location.reload();
+					});	
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+				swal({
+					html: "Barang Gagal Dihapus ",
+					type: "error",
+					confirmButtonText: "Ok" 
+				});
+			}
+		});
 	}
     //     });
 	// }

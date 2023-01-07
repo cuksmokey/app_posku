@@ -27,19 +27,17 @@ class Barang extends CI_Controller {
 		redirect('Barang');
 	}
 
-	function hapus($id) {
+	function hapus() {
 		// $id       = $this->input->post('id');
+		$id = $_POST['id'];
 		$where    = array('id_barang' => $id);
 		$asc      = $this->m_barang->hapus($where, 'barang');
 		if($asc){
-            
             echo json_encode(array("status" => 1));
 			// redirect('barang');
-
         }else{
             echo json_encode(array("status" => 2));
 			// redirect('barang');
-            
         }
 	}
 
