@@ -1,8 +1,8 @@
 <?php
-class M_jasa extends CI_Model {
+class M_barang extends CI_Model {
 	
-	function list_jasa() {
-		return $this->db->get('jasa');
+	function list_barang() {
+		return $this->db->get('barang');
 	}
 
 	function tambah($data, $table) {

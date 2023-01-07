@@ -1,11 +1,11 @@
 <?php
-class M_barang extends CI_Model {
-	
-	function list_barang() {
-		return $this->db->get('barang');
-	}
+class M_operator extends CI_Model {
+    
+    function list_op() {
+        return $this->db->get('operator');
+    }
 
-	function tambah($data, $table) {
+    function tambah($data, $table) {
 		$this->db->insert($table, $data);
 	}
 
