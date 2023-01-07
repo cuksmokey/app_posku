@@ -1,5 +1,5 @@
 <?php
-class jasa extends CI_Controller {
+class Jasa extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
