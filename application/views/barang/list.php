@@ -61,16 +61,16 @@
 </div>
 <script>
 	function hapus(id,nm){
-		swal({
-            html: "Apakah Yakin Kamu Ingin Menghapus <br> Barang '<b>"+nm+"</b>'  ?",
-            type: "question",
-            confirmButtonColor: "#c9302c",
-            confirmButtonText: "<b>Hapus</b>",
-            cancelButtonColor: "#1000c9",
-            cancelButtonText: "<b>Batal</b>",
-            showCancelButton: true
-        }).then((willDelete) => {
-            if (willDelete) {
+		// swal({
+        //     html: "Apakah Yakin Kamu Ingin Menghapus <br> Barang '<b>"+nm+"</b>'  ?",
+        //     type: "question",
+        //     confirmButtonColor: "#c9302c",
+        //     confirmButtonText: "<b>Hapus</b>",
+        //     cancelButtonColor: "#1000c9",
+        //     cancelButtonText: "<b>Batal</b>",
+        //     showCancelButton: true
+        // }).then((willDelete) => {
+        //     if (willDelete) {
                 $.ajax({
                     url         : "<?php echo base_url('barang/hapus')?>/"+id,
                     type        : "POST",
@@ -102,7 +102,7 @@
                         });
                     }
                 });
-            }
-        });
 	}
+    //     });
+	// }
 </script>
