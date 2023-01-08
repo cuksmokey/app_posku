@@ -50,7 +50,7 @@
                                     </button>
                                 </td>
                             </tr>
-                        <?php $no++; $total=$total+$r->total; } ?>
+                        <?php $no++; $total=$total+ ($r->total - $r->disc); } ?>
                             <tr>
                                 <td colspan="4">Total</td>
                                 <td style="text-align:right">Rp. <?= number_format($total);?></td>
