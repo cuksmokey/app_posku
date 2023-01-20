@@ -8,14 +8,14 @@ body {
     border-radius   : 8px;
 }
 h1,h2,h3,h4,h5,h6 {margin:0;padding:0;font-size:18px;}
-ul,ol,li {margin:25px 0 0 0;padding:0;list-style:none;}
+ul,ol,li {margin:0;padding:0;list-style:none;}
 
 #header {background:#3C8DBC;padding:20px;border-bottom:5px solid #0C5D8C;border-radius:8px 8px 0 0;}
 #header a {font-weight:bold;color:#fff;font-size:25px}
 
 #content-pinggir {
     position    : absolute;
-    top         : 86px;
+    top         : 118px;
     left        : 10px;
     width       : 200px
 }
@@ -41,6 +41,10 @@ ul,ol,li {margin:25px 0 0 0;padding:0;list-style:none;}
 #footer a {color:#FFF;}
 
 .gambar {max-height: 100%;max-width: 30%;}
+
+.link-wa a {
+	color: #000;
+}
 
 /* R E S P O N S I V E */
 

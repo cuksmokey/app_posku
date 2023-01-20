@@ -149,19 +149,24 @@ class Laporan extends CI_Controller {
 
         $body .= '<table style="margin:0;padding:0;border-collapse:collapse;font-weight:bold;font-family:tahoma;font-size:10px;width:100%">
 			<tr>
+				<td style="width:25%"></td>
+				<td style="width:1%"></td>
+				<td style="width:74%"></td>
+			</tr>
+			<tr>
 				<td>Tanggal/Waktu</td>
-				<td>: '.$this->tglInd($datetgl).' '.date("H:i").'</td>
+				<td>:</td>
+				<td>'.$this->tglInd($datetgl).' '.date("H:i").'</td>
 			</tr>
 			<tr>
 				<td>No. Nota</td>
-				<td>: '.$inv.'</td>
+				<td>:</td>
+				<td>'.$inv.'</td>
 			</tr>
 			<tr>
-				<td style="padding:0 0 8px">Kasir</td>
-				<td style="padding:0 0 8px">: '.$username.'</td>
-			</tr>
-			<tr>
-				<td colspan="2" style="border-top:1px dashed #000;padding:10px 0 0">ITEM :</td>
+				<td>Kasir</td>
+				<td>:</td>
+				<td>'.$username.'</td>
 			</tr>
         </table>';
 
@@ -173,48 +178,61 @@ class Laporan extends CI_Controller {
 			$bayar = $this->db->query("SELECT*FROM bayar WHERE id_transaksi='$id'")->row();
 		}
         
-        $i        = 0;
-        $total    = 0;
-        $subtotal = 0;
-        $discrp   = 0;
-        
-        $body .="<table style=\"vertical-align:top;margin-bottom:10px;padding:0;border-collapse:collapse;font-size:10px;width:100%\">
+        $body .='<table style="vertical-align:top;padding:0;border-collapse:collapse;font-size:10px;width:100%">
 			<tr>
-				<td style=\"border:0;width:7%\"></td>
-				<td style=\"border:0;width:70%\"></td>
-				<td style=\"border:0;width:23%\"></td>
+				<td style="border:0;width:7%"></td>
+				<td style="border:0;width:65%"></td>
+				<td style="border:0;width:28%"></td>
 			</tr>
-		";
+			<tr>
+				<td style="border-top:1px dashed #000;padding:5px 0;font-family:tahoma;font-weight:bold" colspan="3">ITEM :</td>
+			</tr>';
 
-        foreach ($datad as $datadet)
-        {
+		$i = 0;
+		$subtotal = 0;
+		$total = 0;
+		$discrp = 0;
+		$totot = 0;
+        foreach ($datad as $datadet) {
+			$i++;
 			if($datadet->qty == 1){
 				$kQty = '';
 			}else{
 				$kQty = '('.$datadet->qty.'x)';
 			}
-            $i++;
-            $body .='
-            <tr>
+
+			if($datadet->discrp2 == 0){
+				$subTotal = $datadet->harga;
+				$jumdis = 0;
+			}else{
+				if($datadet->disc == 0){
+					$subTotal = (($datadet->qty * $datadet->harga) - $datadet->potongan);
+					$jumdis = $datadet->potongan;
+				}else{
+					$subTotal = ($datadet->qty * $datadet->harga) - $datadet->discrp2;
+					$jumdis = $datadet->discrp2;
+				}
+			}
+
+            $body .='<tr>
                 <td>'.$i.'.</td>
                 <td>'.$datadet->nm_brg.' '.$kQty.'</td>
-                <td style="text-align:right">Rp. '.number_format(($datadet->harga * $datadet->qty) - $datadet->discrp2).'</td>
+                <td style="text-align:right">Rp. '.number_format($datadet->qty * $datadet->harga).'</td>
             </tr>
             ';
 
-            $subtotal = $subtotal + ($datadet->harga * $datadet->qty);
-            $discrp = $discrp + $datadet->discrp2;
+			$totot += $datadet->qty * $datadet->harga;
+            $subtotal += $subTotal;
+            $discrp += $jumdis;
         }
 
-        $total = $subtotal - $discrp;
+        $total = $totot - $discrp;
 		$body .="</table>";
 
-		
-
-        $body .='<table style="border-collapse:collapse;border-top:1px dashed #000;font-size:10px;width:100%">
+        $body .='<table style="border-collapse:collapse;margin-top:5px;border-top:1px dashed #000;font-size:10px;width:100%">
             <tr>
                 <td style="padding-top:5px">Sub Total</td>
-                <td style="padding-top:5px;text-align:right">Rp. '.number_format($subtotal).'</td>
+                <td style="padding-top:5px;text-align:right">Rp. '.number_format($totot).'</td>
             </tr>
             <tr>
                 <td style="padding-bottom:5px">Diskon</td>
@@ -224,7 +242,7 @@ class Laporan extends CI_Controller {
 				<td colspan="2" style="border-top:1px dashed #000"></td>
 			</tr>
             <tr>
-                <td style="padding:5px 0">Total</td>
+                <td style="padding:5px 0">Total Bayar</td>
                 <td style="padding:5px 0;text-align:right">Rp. '.number_format($total).'</td>
             </tr>
 			<tr>
@@ -240,17 +258,21 @@ class Laporan extends CI_Controller {
             </tr>
 			<tr>
 				<td colspan="2" style="border-top:1px dashed #000"></td>
-			</tr>
-            <tr>
-                <td style="padding-top:5px" colspan="2">
-					<img src="'.base_url().'assets/css/ig.png" width="15" height="15" /> beautyndream.id
-				</td>
-            </tr>
-            <tr>
-                <td style="padding-top:10px;text-align:center;font-weight:bold" colspan="2">~ Have a Nice Day ~</td>
-            </tr>
-            ';
+			</tr>';
 		$body .= "</table>";
+
+		$body .='<table style="margin-top:8px;border-collapse:collapse;font-size:10px;width:100%">';
+		$body .='<tr>
+			<td style="width:5%;text-align:right"><img src="'.base_url().'assets/css/ig.png" width="15" height="15" /></td>
+			<td style="width:65%">beautyndream.id</td>
+			<td style="width:5%;text-align:right"><img src="'.base_url().'assets/css/wa.png" width="15" height="15" /></td>
+			<td style="width:25%">0895-1315-5559</td>
+		</tr>
+		<tr>
+			<td style="padding-top:5px;text-align:center;font-weight:bold" colspan="4">~ Have a Nice Day ~</td>
+		</tr>';
+		$body .='</table>';
+
 		$judul = '-';
 
         $this->M_cetak->template_nota($judul, $body, $position, $date, $cekpdf);

@@ -288,7 +288,7 @@ class M_cetak extends CI_Model {
 		$chari       = '';
 		$chari .= "<table style=\"margin-bottom:5px;border-collapse:collapse;font-family:Century Gothic;color:#000;border-bottom:1px dashed #000;\" width=\"100%\"  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 			<tr>
-				<td align=\"center\"><img src=\"".base_url()."assets/css/logo3.jpeg\"  width=\"100\" height=\"100\" /></td>
+				<td align=\"center\"><img src=\"".base_url()."assets/css/newlogo.png\"  width=\"100\" height=\"100\" /></td>
 			</tr> 
 			<br>
 			<br>

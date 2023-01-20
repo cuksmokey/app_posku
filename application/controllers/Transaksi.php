@@ -8,36 +8,53 @@ class Transaksi extends CI_Controller {
     }
     
     function index() {
-        if(isset($_POST['submit'])) {
-            $id_barang    = $this->input->post('barang');
-            $qty          = $this->input->post('qty');
-            $cek          = $this->db->query("SELECT*FROM barang where id_barang=$id_barang")->row();
-            if($qty > $cek->stok){
-                $this->session->set_flashdata('warning', 'Data Stock <b>Kurang</b> dari Persediaan...');
-                redirect('Transaksi');
-            }else{
-                $this->m_transaksi->simpan_barang();
-                redirect('Transaksi');
-            }
-        }
-        else{
-            $data['user'] 	= $this->session->userdata('username');
-            $data['inv'] 	= urut_transaksi('TR', 12);
-            $data['barang'] = $this->db->query("SELECT*FROM barang where id_barang not in (select id_barang from transaksi_dtl where id_transaksi=0)");
-            $data['detail'] = $this->m_transaksi->tampil_transaksi_dtl()->result();
-			$data['bayar'] = $this->db->query("SELECT*FROM bayar WHERE id_transaksi='0'");
-            $this->template->load('template','transaksi/form_transaksi',$data);
-        }
+		$data['user'] 	= $this->session->userdata('username');
+		$data['inv'] 	= urut_transaksi('TR', 12);
+		$data['barang'] = $this->db->query("SELECT*FROM barang where id_barang not in (select id_barang from transaksi_dtl where id_transaksi=0) ORDER BY nama_barang");
+		$data['bayardong'] = $this->db->query("SELECT*FROM transaksi_dtl WHERE status='0' AND id_transaksi='0'");
+		$data['detail'] = $this->m_transaksi->tampil_transaksi_dtl()->result();
+		$data['bayar'] = $this->db->query("SELECT*FROM bayar WHERE id_transaksi='0'");
+		$this->template->load('template', 'transaksi/form_transaksi', $data);
     }
+
+	function tambahBarang(){
+		$return = $this->m_transaksi->tambahBarang();
+		$url = base_url().'transaksi';
+		echo json_encode(array(
+			'res' => $return,
+			'url' => $url,
+		));
+	}
+
+	function pencarianBarang(){ 
+		$cari = $_GET['search'];
+		$response = $this->m_transaksi->pencarianBarang($cari);
+		echo json_encode($response);
+	}
 
 	function bayarDong(){
 		$bayar = $_POST['bayar'];
 		// CEK JIKA PEMBAYARAN LEBIH KECIL DARI TRANSAKSI
-		$cek = $this->db->query("SELECT SUM((harga * qty)- discrp2) AS harga FROM transaksi_dtl
-		WHERE id_transaksi='0'
-		GROUP BY id_transaksi")->row();
+		$cek = $this->db->query("SELECT*FROM transaksi_dtl WHERE id_transaksi='0'");
+		
+		$qbayar = 0;
+		foreach($cek->result() as $r){
+			if($r->discrp2 == 0){
+				$subTotal = $r->qty * $r->harga;
+				$jumdis = 0;
+			}else{
+				if($r->disc == 0){
+					$subTotal = (($r->qty * $r->harga) - $r->potongan);
+					$jumdis = $r->potongan;
+				}else{
+					$subTotal = ($r->qty * $r->harga) - $r->discrp2;
+					$jumdis = $r->discrp2;
+				}
+			}
+			$qbayar += $subTotal;
+		}
 
-		if($bayar < $cek->harga){
+		if($bayar < $qbayar){
 			echo json_encode(
 				array(
 					'res' => false,
@@ -60,7 +77,7 @@ class Transaksi extends CI_Controller {
         $user       = $this->session->userdata('username');
         $id_op      = $this->db->get_where('operator',array('username'=>$user))->row_array();
         $data       = array('operator_id'=>$id_op['operator_id'],'tanggal_transaksi'=>$tanggal,'invoice'=>$inv);
-        $this->m_transaksi->selesai($data,$xinv[1]);
+        $this->m_transaksi->selesai($data);
         redirect('Transaksi');
     }
 
