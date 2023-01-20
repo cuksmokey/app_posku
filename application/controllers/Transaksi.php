@@ -8,8 +8,8 @@ class Transaksi extends CI_Controller {
     }
     
     function index() {
-		$data['user'] 	= $this->session->userdata('username');
-		$data['inv'] 	= urut_transaksi('TR', 12);
+		$data['user'] = $this->session->userdata('username');
+		$data['inv'] = urut_transaksi('TR', 12);
 		$data['barang'] = $this->db->query("SELECT*FROM barang where id_barang not in (select id_barang from transaksi_dtl where id_transaksi=0) ORDER BY nama_barang");
 		$data['bayardong'] = $this->db->query("SELECT*FROM transaksi_dtl WHERE status='0' AND id_transaksi='0'");
 		$data['detail'] = $this->m_transaksi->tampil_transaksi_dtl()->result();
