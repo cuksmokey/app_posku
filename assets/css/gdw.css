@@ -1,46 +1,140 @@
 body {
-    position        : relative;
-    background      : #D2D6DE;
-    margin          : 15px auto;
-    font-size       : 14px;
-    max-width       : 90% !important;
-    box-shadow      : 0 0 4px #AAA,0 0 6px #AAA,0 0 8px #AAA,0 0 10px #AAA;
-    border-radius   : 8px;
+	position: relative;
+	background: #D2D6DE;
+	margin: 15px auto;
+	font-size: 14px;
+	max-width: 90% !important;
+	box-shadow: 0 0 4px #AAA, 0 0 6px #AAA, 0 0 8px #AAA, 0 0 10px #AAA;
+	border-radius: 8px;
 }
-h1,h2,h3,h4,h5,h6 {margin:0;padding:0;font-size:18px;}
-ul,ol,li {margin:0;padding:0;list-style:none;}
 
-#header {background:#3C8DBC;padding:20px;border-bottom:5px solid #0C5D8C;border-radius:8px 8px 0 0;}
-#header a {font-weight:bold;color:#fff;font-size:25px}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	padding: 0;
+	font-size: 18px;
+}
+
+ul,
+ol,
+li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#header {
+	background: #3C8DBC;
+	padding: 20px;
+	border-bottom: 5px solid #0C5D8C;
+	border-radius: 8px 8px 0 0;
+}
+
+#header a {
+	font-weight: bold;
+	color: #fff;
+	font-size: 25px
+}
 
 #content-pinggir {
-    position    : absolute;
-    top         : 118px;
-    left        : 10px;
-    width       : 200px
+	position: absolute;
+	top: 118px;
+	left: 10px;
+	width: 200px
 }
-.content-pinggir-link li {position:relative;background:#3C8DBC;margin:0 0 3px;padding:10px 10px 10px 51px;cursor:pointer;border-radius:8px}
-.content-pinggir-link li:first-child {border-top:0;}
-.content-pinggir-link li:last-child {border-bottom:0;}
-#content-pinggir a {color:#fff}
-#content-pinggir a span {position:absolute;top:0;bottom:0;left:0;background:#0C5D8C;color:rgb(255, 255, 255);padding:14px;border-radius:8px 0 0 8px}
-#content-pinggir a:before {content:"";position:absolute;top:0;right:0;bottom:0;left:0}
 
-.content-pinggir-link .scd-lvl {display:none;}
-.content-pinggir-link li:hover .scd-lvl {display:block}
+.content-pinggir-link li {
+	position: relative;
+	background: #3C8DBC;
+	margin: 0 0 3px;
+	padding: 10px 10px 10px 51px;
+	cursor: pointer;
+	border-radius: 8px
+}
 
-.scd-lvl li {background:#3C8DBC;margin:-10px;padding:15px 10px}
-.scd-lvl li:first-child {margin:10px -10px -10px}
+.content-pinggir-link li:first-child {
+	border-top: 0;
+}
 
-#content-utama {background:#FFFFFF;min-height:500px}
+.content-pinggir-link li:last-child {
+	border-bottom: 0;
+}
 
-#content-isi {margin:0 10px 0 220px;padding:12px 0 0 0;}
-.tablle {margin-top:12px;}
+#content-pinggir a {
+	color: #fff
+}
 
-#footer {background:#3C8DBC;padding:20px;border-top:5px solid #0C5D8C;border-radius:0 0 8px 8px;}
-#footer a {color:#FFF;}
+#content-pinggir a span {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	background: #0C5D8C;
+	color: rgb(255, 255, 255);
+	padding: 14px;
+	border-radius: 8px 0 0 8px
+}
 
-.gambar {max-height: 100%;max-width: 30%;}
+#content-pinggir a:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0
+}
+
+.content-pinggir-link .scd-lvl {
+	display: none;
+}
+
+.content-pinggir-link li:hover .scd-lvl {
+	display: block
+}
+
+.scd-lvl li {
+	background: #3C8DBC;
+	margin: -10px;
+	padding: 15px 10px
+}
+
+.scd-lvl li:first-child {
+	margin: 10px -10px -10px
+}
+
+#content-utama {
+	background: #FFFFFF;
+	min-height: 500px
+}
+
+#content-isi {
+	margin: 0 10px 0 220px;
+	padding: 12px 0 0 0;
+}
+
+.tablle {
+	margin-top: 12px;
+}
+
+#footer {
+	background: #3C8DBC;
+	padding: 20px;
+	border-top: 5px solid #0C5D8C;
+	border-radius: 0 0 8px 8px;
+}
+
+#footer a {
+	color: #FFF;
+}
+
+.gambar {
+	max-height: 100%;
+	max-width: 30%;
+}
 
 .link-wa a {
 	color: #000;
@@ -49,16 +143,35 @@ ul,ol,li {margin:0;padding:0;list-style:none;}
 /* R E S P O N S I V E */
 
 @media screen and (min-width:320px) {
-body {max-width:320px;line-height:1.3}}
+	body {
+		max-width: 320px;
+		line-height: 1.3
+	}
+}
 
 @media screen and (min-width:360px) {
-body {max-width:360px;line-height:1.4}}
+	body {
+		max-width: 360px;
+		line-height: 1.4
+	}
+}
 
 @media screen and (min-width:400px) {
-body {max-width:400px}}
+	body {
+		max-width: 400px
+	}
+}
 
 @media screen and (min-width:600px) {
-body {max-width:600px;font-size:14px;line-height:1.5}}
+	body {
+		max-width: 600px;
+		font-size: 14px;
+		line-height: 1.5
+	}
+}
 
 @media screen and (min-width:640px) {
-body {max-width:900px}}
+	body {
+		max-width: 900px
+	}
+}
