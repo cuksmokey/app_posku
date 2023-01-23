@@ -43,14 +43,14 @@
                                 <td><?= $r->invoice ?></td>
                                 <td><?= $this->M_cetak->tanggal_format_indonesia($r->tanggal_transaksi) ?></td>
                                 <td><?= $r->nama_lengkap ?></td>
-                                <td style="text-align:right">Rp. <?= number_format($r->total - $r->disc) ?></td>
+                                <td style="text-align:right">Rp. <?= number_format($r->total) ?></td>
                                 <td style="text-align:center">
                                     <button type="button" onclick="cetak_nota('<?= $r->id_transaksi ?>')" class="btn btn-warning"><b>
                                         <i class="fa fa-print"></i>&nbsp; Cetak</b>
                                     </button>
                                 </td>
                             </tr>
-                        <?php $no++; $total=$total+ ($r->total - $r->disc); } ?>
+                        <?php $no++; $total=$total+ $r->total; } ?>
                             <tr>
                                 <td colspan="4">Total</td>
                                 <td style="text-align:right">Rp. <?= number_format($total);?></td>
