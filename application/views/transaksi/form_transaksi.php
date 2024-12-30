@@ -97,106 +97,101 @@
 	</div>
 </div>
 
-<div class="xxx">
-	<div class="panell">
-		<div class="panell-body">
-			<div class="table">
-				<table class="table table-striped table-bordered">
-					<thead>
-						<tr>
-							<th style="text-align:center">No.</th>
-							<th style="text-align:center">Nama Barang</th>
-							<th style="text-align:center">Qty</th>
-							<th style="text-align:center">Harga</th>
-							<th style="text-align:center">Harga x Qty</th>
-							<th style="text-align:center">Diskon / Potongan</th>
-							<th style="text-align:center">Sub Total</th>
-							<th style="text-align:center">Aksi</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-						$no = 1;
-						$total = 0;
-						$jmlTot = 0;
-						$sumdis = 0;
-						foreach ($detail as $r) {
-							if($r->discrp2 == 0){
-								$diss = '-';
-								$subTotal = $r->qty * $r->harga;
-								$jumdis = 0;
-							}else{
-								if($r->disc == 0){
-									$diss = 'Rp. '.number_format($r->potongan);
-									$subTotal = (($r->qty * $r->harga) - $r->potongan);
-									$jumdis = $r->potongan;
-								}else{
-									$diss = '( '.$r->disc.'% ) - '.' Rp. '.number_format($r->discrp2);
-									$subTotal = ($r->qty * $r->harga) - $r->discrp2;
-									$jumdis = $r->discrp2;
-								}
-							}
-						?>
-							<tr class="gradeU">
-								<td style="text-align:center"><?= $no ?></td>
-								<td><?= $r->nama_barang ?></td>
-								<td style="text-align:center"><?= number_format($r->qty) ?></td>
-								<td style="text-align:right">Rp. <?= number_format($r->harga) ?></td>
-								<td style="text-align:right">Rp. <?= number_format($r->qty * $r->harga) ?></td>
-								<td style="text-align:right"><?= $diss ?></td>
-								<td style="text-align:right">Rp. <?= number_format($subTotal) ?></td>
-								<td style="text-align:center">
-									<?= anchor('transaksi/hapusitem/' . $r->id_transaksi_dtl, 'Hapus', array('class' => 'btn btn-danger'), 'trash') ?>
-								</td>
-							</tr>
-						<?php 
-							$jmlTot += $r->qty * $r->harga;
-							$total = $total + $subTotal;
-							$sumdis += $jumdis;
-							$no++;
-						} ?>
-						<tr class="gradeA">
-							<td style="text-align:right" colspan="4"><b>TOTAL</b></td>
-							<td style="text-align:right"><b>Rp. <?= number_format($jmlTot); ?></b></td>
-							<td style="text-align:right"><b>Rp. <?= number_format($sumdis); ?></b></td>
-							<td style="text-align:right" colspan="2"></td>
-						</tr>
-						<tr class="gradeA">
-							<td style="text-align:right" colspan="6"><b>TOTAL BAYAR</b></td>
-							<td style="text-align:right"><b>Rp. <?= number_format($total); ?></b></td>
-						</tr>
-						<?php if ($bayar->num_rows() > 0) {
-							$tbayar = $bayar->row()->bayar
-						?>
-							<tr class="gradeA">
-								<td style="text-align:right" colspan="6"><b>PEMBAYARAN</b></td>
-								<td style="text-align:right"><b>Rp. <?= number_format($bayar->row()->bayar); ?></b></td>
-								<td style="text-align:center">
-									<?= anchor('transaksi/hapusBayar/'.$bayar->row()->id_transaksi, 'Hapus', array('class' => 'btn btn-danger'), 'trash') ?>
-								</td>
-							</tr>
-							<tr class="gradeA">
-								<td style="text-align:right" colspan="6"><b>KEMBALIAN</b></td>
-								<td style="text-align:right"><b>Rp. <?= number_format($bayar->row()->bayar - $total); ?></b></td>
-								<td></td>
-							</tr>
-						<?php }else{
-							$tbayar = 0;
-						}
-						?>
-					</tbody>
-				</table>
-			</div>
-			<!-- /. TABLE  -->
-		</div>
-	</div>
+<div style="overflow:auto;white-space:nowrap">
+	<table class="table table-striped table-bordered" style="margin-bottom:0">
+		<thead>
+			<tr>
+				<th style="text-align:center">No.</th>
+				<th style="text-align:center">Nama Barang</th>
+				<th style="text-align:center">Qty</th>
+				<th style="text-align:center">Harga</th>
+				<th style="text-align:center">Harga x Qty</th>
+				<th style="text-align:center">Diskon / Potongan</th>
+				<th style="text-align:center">Sub Total</th>
+				<th style="text-align:center">Aksi</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			$no = 1;
+			$total = 0;
+			$jmlTot = 0;
+			$sumdis = 0;
+			foreach ($detail as $r) {
+				if($r->discrp2 == 0){
+					$diss = '-';
+					$subTotal = $r->qty * $r->harga;
+					$jumdis = 0;
+				}else{
+					if($r->disc == 0){
+						$diss = 'Rp. '.number_format($r->potongan);
+						$subTotal = (($r->qty * $r->harga) - $r->potongan);
+						$jumdis = $r->potongan;
+					}else{
+						$diss = '( '.$r->disc.'% ) - '.' Rp. '.number_format($r->discrp2);
+						$subTotal = ($r->qty * $r->harga) - $r->discrp2;
+						$jumdis = $r->discrp2;
+					}
+				}
+			?>
+				<tr class="gradeU">
+					<td style="text-align:center"><?= $no ?></td>
+					<td><?= $r->nama_barang ?></td>
+					<td style="text-align:center"><?= number_format($r->qty) ?></td>
+					<td style="text-align:right">Rp. <?= number_format($r->harga) ?></td>
+					<td style="text-align:right">Rp. <?= number_format($r->qty * $r->harga) ?></td>
+					<td style="text-align:right"><?= $diss ?></td>
+					<td style="text-align:right">Rp. <?= number_format($subTotal) ?></td>
+					<td style="text-align:center">
+						<?= anchor('transaksi/hapusitem/' . $r->id_transaksi_dtl, 'Hapus', array('class' => 'btn btn-xs btn-danger'), 'trash') ?>
+					</td>
+				</tr>
+			<?php 
+				$jmlTot += $r->qty * $r->harga;
+				$total = $total + $subTotal;
+				$sumdis += $jumdis;
+				$no++;
+			} ?>
+			<tr class="gradeA">
+				<td style="text-align:right" colspan="4"><b>TOTAL</b></td>
+				<td style="text-align:right"><b>Rp. <?= number_format($jmlTot); ?></b></td>
+				<td style="text-align:right"><b>Rp. <?= number_format($sumdis); ?></b></td>
+				<td style="text-align:right" colspan="2"></td>
+			</tr>
+			<tr class="gradeA">
+				<td style="text-align:right" colspan="6"><b>TOTAL BAYAR</b></td>
+				<td style="text-align:right"><b>Rp. <?= number_format($total); ?></b></td>
+			</tr>
+			<?php if ($bayar->num_rows() > 0) {
+				$tbayar = $bayar->row()->bayar
+			?>
+				<tr class="gradeA">
+					<td style="text-align:right" colspan="6"><b>PEMBAYARAN</b></td>
+					<td style="text-align:right"><b>Rp. <?= number_format($bayar->row()->bayar); ?></b></td>
+					<td style="text-align:center">
+						<?= anchor('transaksi/hapusBayar/'.$bayar->row()->id_transaksi, 'Hapus', array('class' => 'btn btn-xs btn-danger'), 'trash') ?>
+					</td>
+				</tr>
+				<tr class="gradeA">
+					<td style="text-align:right" colspan="6"><b>KEMBALIAN</b></td>
+					<td style="text-align:right"><b>Rp. <?= number_format($bayar->row()->bayar - $total); ?></b></td>
+					<td></td>
+				</tr>
+			<?php }else{
+				$tbayar = 0;
+			}
+			?>
+		</tbody>
+	</table>
 </div>
 <!-- /. ROW  -->
 <?php if ($bayar->num_rows() > 0) { ?>
-	<form>
-		<?= anchor('transaksi/selesai/'.$inv, 'SIMPAN', array('class' => 'btn btn-primary btn-sm'), 'save') ?>
-		<br><br>
-	</form>
+	<div style="margin-top: 12px;">
+		<form>
+			<?= anchor('transaksi/selesai/'.$inv, 'SIMPAN', array('class' => 'btn btn-primary btn-sm'), 'save') ?>
+			<br><br>
+		</form>
+	</div>
 <?php } ?>
 
 <?php if ($bayar->num_rows() > 0) { ?>
@@ -209,22 +204,16 @@
 
 <?php if($bayardong->num_rows() > 0) { ?>
 	<div class="row">
-		<div class="col-md-12">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<table style="width:100%">
-						<tr>
-							<td style="width:50%;padding:5px;text-align:right;font-weight:bold">PEMBAYARAN :</td>
-							<td style="width:50%;padding:5px">
-								<input type="text" name="bayardong" id="bayardong" placeholder="BAYAR" autocomplete="off" class="form-control">
-							</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td><button onclick="bayarDong()" class="btn btn-primary btn-sm btn-bayar" style="font-weight:bold"><i class="fa fa-money"></i> BAYAR</button></td>
-						</tr>
-					</table>
-				</div>
+		<div class="card-body row" style="font-weight:bold;padding:16px 12px 4px">
+			<div class="col-md-8">PEMBAYARAN</div>
+			<div class="col-md-4">
+				<input type="text" name="bayardong" id="bayardong" placeholder="BAYAR" autocomplete="off" class="form-control">
+			</div>
+		</div>
+		<div class="card-body row" style="font-weight:bold;padding:0 12px 16px">
+			<div class="col-md-8"></div>
+			<div class="col-md-4">
+			<button onclick="bayarDong()" class="btn btn-primary btn-sm btn-bayar" style="font-weight:bold"><i class="fa fa-money"></i> BAYAR</button>
 			</div>
 		</div>
 	</div>

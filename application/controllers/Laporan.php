@@ -12,14 +12,22 @@ class Laporan extends CI_Controller {
 
 	function index() {
         if(isset($_POST['submit'])) {
-            $tanggal1 		= $this->input->post('tanggal1');
-            $tanggal2 		= $this->input->post('tanggal2');
-            $data['record'] = $this->m_laporan->laporan_periode($tanggal1, $tanggal2);
+			$tanggal1 = $this->input->post('tanggal1');
+			$tanggal2 = $this->input->post('tanggal2');
+			$data = [
+				'record' => $this->m_laporan->laporan_periode($tanggal1, $tanggal2),
+				'tanggal1' => $tanggal1,
+				'tanggal2' => $tanggal2,
+			];
             $this->template->load('template','laporan/list', $data);
         }
         else 
         {
-            $data['record']=  $this->m_laporan->lpr_default();
+			$data = [
+				'record' => $this->m_laporan->lpr_default(),
+				'tanggal1' => '',
+				'tanggal2' => '',
+			];
             $this->template->load('template','laporan/list', $data);
     	}   
     }

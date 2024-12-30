@@ -13,7 +13,7 @@
                         <input type="date" name="tanggal2" class="form-control" placeholder="Tanggal Selesai">
                     </div>
                     <button class="btn btn-primary btn-sm" type="submit" name="submit"><b>Tampilkan</b></button>
-                    <button class="btn btn-danger btn-sm" onclick="cetak()" type="button" name="submit"><i class="fa fa-print"></i>&nbsp;<b>CETAK PDF</b></button>
+                    <!-- <button class="btn btn-danger btn-sm" onclick="cetak()" type="button" name="submit"><i class="fa fa-print"></i>&nbsp;<b>CETAK PDF</b></button> -->
                 </form>
             </div>
         </div>
@@ -40,11 +40,42 @@
                         </thead>
                         <tbody>
                         <?php
+							// pagination
+							$tahun = date("Y");
+							$batas = 20;
+							$halaman = isset($_GET['halaman'])?(int)$_GET['halaman'] : 1;
+							$halaman_awal = ($halaman>1) ? ($halaman * $batas) - $batas : 0;	
+							$previous = $halaman - 1;
+							$next = $halaman + 1;
+							// klik tampilkan
+							if($tanggal1 != '' && $tanggal2 != ''){
+								$data = $this->db->query("SELECT t.invoice,t.id_transaksi,t.tanggal_transaksi, o.nama_lengkap, sum(td.harga*td.qty) AS total,SUM(td.discrp2) AS disc
+								FROM transaksi AS t,transaksi_dtl AS td, operator AS o
+								WHERE td.id_transaksi = t.id_transaksi AND o.operator_id = t.operator_id 
+								AND t.tanggal_transaksi BETWEEN '$tanggal1' AND '$tanggal2'
+								GROUP BY t.invoice DESC,t.id_transaksi
+								ORDER BY t.tanggal_transaksi DESC,t.invoice DESC");
+							}else{
+								$data = $this->db->query("SELECT t.invoice,t.id_transaksi,t.tanggal_transaksi, o.nama_lengkap, sum(td.harga*td.qty) AS total,SUM(td.discrp2) AS disc
+								FROM transaksi AS t,transaksi_dtl AS td, operator AS o
+								WHERE td.id_transaksi = t.id_transaksi AND o.operator_id = t.operator_id AND t.tanggal_transaksi LIKE '%$tahun%'
+								GROUP BY t.invoice DESC,t.id_transaksi
+								ORDER BY t.tanggal_transaksi DESC,t.invoice DESC
+								LIMIT $halaman_awal, $batas");
+								$data2 = $this->db->query("SELECT t.invoice,t.id_transaksi,t.tanggal_transaksi, o.nama_lengkap, sum(td.harga*td.qty) AS total,SUM(td.discrp2) AS disc
+								FROM transaksi AS t,transaksi_dtl AS td, operator AS o
+								WHERE td.id_transaksi = t.id_transaksi AND o.operator_id = t.operator_id AND t.tanggal_transaksi LIKE '%$tahun%'
+								GROUP BY t.invoice DESC,t.id_transaksi
+								ORDER BY t.tanggal_transaksi DESC,t.invoice DESC");
+								$jumlah_data = $data2->num_rows();
+								$total_halaman = ceil($jumlah_data / $batas);
+							}
+							
 							$no = 0;
 							$toTotal = 0;
 							$totDis = 0;
 							$totSubTotal = 0;
-							foreach ($record->result() as $r) {
+							foreach ($data->result() as $r) {
 								$no++;
 								$idt = $this->db->query("SELECT*FROM transaksi_dtl WHERE id_transaksi='$r->id_transaksi'");
 								$totTransaksi = 0;
@@ -96,6 +127,25 @@
                             </tr>
                         </tbody>
                     </table>
+					<?php if($tanggal1 == '' && $tanggal2 == ''){ ?>
+						<nav>
+							<ul class="pagination justify-content-center">
+								<li class="page-item">
+									<a class="page-link" <?php if($halaman > 1){ echo "href='?halaman=$previous'"; } ?>>Previous</a>
+								</li>
+								<?php 
+								for($x=1;$x<=$total_halaman;$x++){
+									?> 
+									<li class="page-item"><a class="page-link" href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
+									<?php
+								}
+								?>				
+								<li class="page-item">
+									<a  class="page-link" <?php if($halaman < $total_halaman) { echo "href='?halaman=$next'"; } ?>>Next</a>
+								</li>
+							</ul>
+						</nav>
+					<?php } ?>
                 </div>
                 <!-- /. TABLE  -->
             </div>
